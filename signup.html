@@ -186,7 +186,7 @@
                 <div class="form-group">
                     <label for="phone">Phone Number</label>
                     <input type="tel" id="phone" name="phone" required>
-                    <div class="error" id="phoneError">Please enter a valid phone number</div>
+                    <div class="error" id="phoneError">Please enter a valid 10-digit phone number</div>
                 </div>
 
                 <div class="form-group">
@@ -234,11 +234,13 @@
         }
 
         function validateEmail(email) {
-            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+            return /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email);
         }
 
         function validatePhone(phone) {
-            return /^[0-9]{10}$/.test(phone.replace(/[^\s()-]/g, ''));
+            // Remove non-digit characters (except + for international format if needed, but sticking to 10 digits for now)
+            const cleanedPhone = phone.replace(/[^0-9]/g, '');
+            return cleanedPhone.length === 10; // Check if exactly 10 digits remain
         }
 
         form.addEventListener('submit', function(e) {
