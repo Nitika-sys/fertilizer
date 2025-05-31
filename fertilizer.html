@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farmer's Fertilizer Guide</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f0f4f0;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .header {
+            background-color: #2c5282;
+            color: white;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .nav-tabs {
+            display: flex;
+            background: #fff;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .nav-tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border: none;
+            background: none;
+            font-size: 16px;
+            color: #666;
+        }
+
+        .nav-tab.active {
+            background: #4CAF50;
+            color: white;
+            border-radius: 5px;
+        }
+
+        .tab-content {
+            display: none;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .fertilizer-card {
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            background: #f9f9f9;
+        }
+
+        .schedule-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        .schedule-table th, .schedule-table td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+
+        .schedule-table th {
+            background-color: #f5f5f5;
+        }
+
+        .tips-list {
+            list-style-type: none;
+        }
+
+        .tips-list li {
+            margin-bottom: 10px;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .tips-list li:before {
+            content: "•";
+            color: #4CAF50;
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+
+        .tracker-form {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #666;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .btn {
+            background: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background: #45a049;
+        }
+
+        .alert {
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 4px;
+        }
+
+        .alert-success {
+            background: #dff0d8;
+            color: #3c763d;
+            border: 1px solid #d6e9c6;
+        }
+
+        .recommendation-result {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 4px;
+            border: 1px solid #dee2e6;
+        }
+
+        .weather-widget {
+            background: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .nav-tabs {
+                flex-direction: column;
+            }
+            
+            .nav-tab {
+                margin-bottom: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1>Farmer's Daily Fertilizer Guide</h1>
+        <p>Your complete guide for fertilizer application</p>
+    </header>
+
+    <div class="container">
+        <div class="nav-tabs">
+            <button class="nav-tab active" onclick="showTab('guide')">Daily Guide</button>
+            <button class="nav-tab" onclick="showTab('schedule')">Schedule</button>
+            <button class="nav-tab" onclick="showTab('recommend')">Get Recommendations</button>
+            <button class="nav-tab" onclick="showTab('tracker')">Usage Tracker</button>
+            <button class="nav-tab" onclick="showTab('tips')">Tips & Weather</button>
+        </div>
+
+        <div id="guide" class="tab-content active">
+            <h2>Common Fertilizers Guide</h2>
+            <div class="fertilizer-card">
+                <h3>Urea (46-0-0)</h3>
+                <p>Cost: ₹300-350 per 50kg bag</p>
+                <p>Best Use: Top dressing for immediate nitrogen needs</p>
+                <p>Application Rate: 2-3 kg per acre per application</p>
+            </div>
+
+            <div class="fertilizer-card">
+                <h3>DAP (18-46-0)</h3>
+                <p>Cost: ₹1200-1300 per 50kg bag</p>
+                <p>Best Use: Pre-planting and early growth stages</p>
+                <p>Application Rate: 4-5 kg per acre at sowing</p>
+            </div>
+
+            <div class="fertilizer-card">
+                <h3>NPK (15-15-15)</h3>
+                <p>Cost: ₹800-900 per 50kg bag</p>
+                <p>Best Use: Balanced nutrition throughout growth</p>
+                <p>Application Rate: 3-4 kg per acre per application</p>
+            </div>
+        </div>
+
+        <div id="schedule" class="tab-content">
+            <h2>Daily Application Schedule</h2>
+            <select id="cropSelect" onchange="updateSchedule()" class="form-group">
+                <option value="rice">Rice</option>
+                <option value="wheat">Wheat</option>
+                <option value="corn">Corn</option>
+                <option value="vegetables">Vegetables</option>
+            </select>
+
+            <table class="schedule-table">
+                <thead>
+                    <tr>
+                        <th>Day</th>
+                        <th>Fertilizer Type</th>
+                        <th>Amount</th>
+                        <th>Method</th>
+                    </tr>
+                </thead>
+                <tbody id="scheduleBody">
+                    <!-- Filled by JavaScript -->
+                </tbody>
+            </table>
+        </div>
+
+         <!-- New Recommendations tab -->
+         <div id="recommend" class="tab-content">
+            <h2>Get Fertilizer Recommendations</h2>
+            <form class="recommendation-form" onsubmit="getFertilizerRecommendation(event)">
+                <div class="form-group">
+                    <label>Crop Type</label>
+                    <select id="cropType" required>
+                        <option value="">Select Crop</option>
+                        <option value="rice">Rice</option>
+                        <option value="wheat">Wheat</option>
+                        <option value="corn">Corn</option>
+                        <option value="vegetables">Vegetables</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Soil Type</label>
+                    <select id="soilType" required>
+                        <option value="">Select Soil Type</option>
+                        <option value="clay">Clay</option>
+                        <option value="loam">Loam</option>
+                        <option value="sandy">Sandy</option>
+                        <option value="silt">Silt</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Field Area (acres)</label>
+                    <input type="number" id="fieldAreaRecommend" required min="0.1" step="0.1">
+                </div>
+                <div class="form-group">
+                    <label>Current Soil pH (if known)</label>
+                    <input type="number" id="soilPH" min="0" max="14" step="0.1">
+                </div>
+                <div class="form-group">
+                    <label>Previous Crop</label>
+                    <select id="previousCrop">
+                        <option value="">Select Previous Crop</option>
+                        <option value="rice">Rice</option>
+                        <option value="wheat">Wheat</option>
+                        <option value="corn">Corn</option>
+                        <option value="legumes">Legumes</option>
+                        <option value="none">None/First Time</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Irrigation Method</label>
+                    <select id="irrigationMethod" required>
+                        <option value="">Select Irrigation Method</option>
+                        <option value="drip">Drip Irrigation</option>
+                        <option value="sprinkler">Sprinkler</option>
+                        <option value="flood">Flood Irrigation</option>
+                        <option value="rainfed">Rainfed</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn">Get Recommendation</button>
+            </form>
+
+            <div id="recommendationResult" class="recommendation-result" style="display: none;">
+                <!-- Recommendations will be displayed here -->
+            </div>
+        </div>
+
+        <div id="tracker" class="tab-content">
+            <h2>Fertilizer Usage Tracker</h2>
+            <form class="tracker-form" onsubmit="trackUsage(event)">
+                <div class="form-group">
+                    <label>Date</label>
+                    <input type="date" id="useDate" required>
+                </div>
+                <div class="form-group">
+                    <label>Fertilizer Type</label>
+                    <select id="fertilizerType" required>
+                        <option value="urea">Urea</option>
+                        <option value="dap">DAP</option>
+                        <option value="npk">NPK</option>
+                        <option value="organic">Organic Manure</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Amount Used (kg)</label>
+                    <input type="number" id="amountUsed" required>
+                </div>
+                <div class="form-group">
+                    <label>Field Area (acres)</label>
+                    <input type="number" id="fieldArea" required>
+                </div>
+                <button type="submit" class="btn">Track Usage</button>
+            </form>
+
+            <div id="trackingHistory">
+                <!-- Filled by JavaScript -->
+            </div>
+        </div>
+
+        <div id="tips" class="tab-content">
+            <div class="weather-widget">
+                <h3>Today's Application Tips</h3>
+                <p id="weatherTip">Loading weather-based tips...</p>
+            </div>
+
+            <h3>General Tips</h3>
+            <ul class="tips-list">
+                <li>Apply fertilizers early morning or evening</li>
+                <li>Ensure soil is moist but not waterlogged</li>
+                <li>Don't apply before expected heavy rain</li>
+                <li>Keep records of all applications</li>
+                <li>Use protective gear when applying chemicals</li>
+                <li>Store fertilizers in a dry, covered area</li>
+                <li>Don't mix different types of fertilizers</li>
+                <li>Follow recommended dosage strictly</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // Crop schedules data
+        const schedules = {
+            rice: [
+                { day: "Pre-planting", fertilizer: "Farmyard Manure", amount: "100kg/acre", method: "Base application" },
+                { day: "Pre-planting", fertilizer: "DAP", amount: "50kg/acre", method: "Mix with soil" },
+                { day: "Day 20", fertilizer: "Urea", amount: "25kg/acre", method: "Top dressing" },
+                { day: "Day 40", fertilizer: "Urea", amount: "25kg/acre", method: "Top dressing" },
+                { day: "Day 60", fertilizer: "NPK", amount: "25kg/acre", method: "Band placement" },
+                { day: "Day 75", fertilizer: "Urea", amount: "25kg/acre", method: "If needed" }
+            ],
+            wheat: [
+                { day: "Pre-planting", fertilizer: "Farmyard Manure", amount: "150kg/acre", method: "Base application" },
+                { day: "Pre-planting", fertilizer: "DAP", amount: "40kg/acre", method: "Mix with soil" },
+                { day: "Day 25", fertilizer: "Urea", amount: "30kg/acre", method: "Top dressing" },
+                { day: "Day 45", fertilizer: "Urea", amount: "30kg/acre", method: "Top dressing" },
+                { day: "Day 65", fertilizer: "NPK", amount: "20kg/acre", method: "Band placement" }
+            ],
+            // Add more crops as needed
+        };
+
+        // Show selected tab
+        function showTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.nav-tab').forEach(tab => tab.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        // Update schedule table
+        function updateSchedule() {
+            const crop = document.getElementById('cropSelect').value;
+            const scheduleBody = document.getElementById('scheduleBody');
+            scheduleBody.innerHTML = '';
+
+            schedules[crop].forEach(item => {
+                scheduleBody.innerHTML += `
+                    <tr>
+                        <td>${item.day}</td>
+                        <td>${item.fertilizer}</td>
+                        <td>${item.amount}</td>
+                        <td>${item.method}</td>
+                    </tr>
+                `;
+            });
+        }
+
+        // Previous JavaScript code remains...
+
+        // Add new function for fertilizer recommendations
+        function getFertilizerRecommendation(event) {
+            event.preventDefault();
+            
+            const cropType = document.getElementById('cropType').value;
+            const soilType = document.getElementById('soilType').value;
+            const area = document.getElementById('fieldAreaRecommend').value;
+            const pH = document.getElementById('soilPH').value;
+            const previousCrop = document.getElementById('previousCrop').value;
+            const irrigation = document.getElementById('irrigationMethod').value;
+
+            // Recommendation logic based on input parameters
+            let recommendation = calculateRecommendation(cropType, soilType, area, pH, previousCrop, irrigation);
+
+            // Display recommendation
+            const resultDiv = document.getElementById('recommendationResult');
+            resultDiv.style.display = 'block';
+            resultDiv.innerHTML = `
+                <h3>Fertilizer Recommendations</h3>
+                <div class="fertilizer-card">
+                    <h4>Base Application (Pre-planting)</h4>
+                    ${recommendation.base}
+                </div>
+                <div class="fertilizer-card">
+                    <h4>Growth Stage Applications</h4>
+                    ${recommendation.growth}
+                </div>
+                <div class="fertilizer-card">
+                    <h4>Additional Notes</h4>
+                    ${recommendation.notes}
+                </div>
+            `;
+        }
+
+        function calculateRecommendation(crop, soil, area, pH, previousCrop, irrigation) {
+    // Convert area to number to ensure proper calculations
+    area = parseFloat(area);
+    
+    // Initialize recommendation sections
+    let base = '';
+    let growth = '';
+    let notes = '';
+
+    // Recommendation logic for each crop type
+    switch(crop) {
+        case 'rice':
+            base = `
+                <p>- DAP: ${Math.round(area * 50)}kg</p>
+                <p>- Potash: ${Math.round(area * 30)}kg</p>
+                <p>- Zinc Sulfate: ${Math.round(area * 25)}kg</p>
+            `;
+            growth = `
+                <p>First Top Dressing (15-20 days after transplanting):</p>
+                <p>- Urea: ${Math.round(area * 35)}kg</p>
+                <p>Second Top Dressing (40-45 days after transplanting):</p>
+                <p>- Urea: ${Math.round(area * 35)}kg</p>
+            `;
+            break;
+            
+        case 'wheat':
+            base = `
+                <p>- Farmyard Manure: ${Math.round(area * 150)}kg</p>
+                <p>- DAP: ${Math.round(area * 40)}kg</p>
+                <p>- Muriate of Potash: ${Math.round(area * 20)}kg</p>
+            `;
+            growth = `
+                <p>First Top Dressing (20-25 days after sowing):</p>
+                <p>- Urea: ${Math.round(area * 30)}kg</p>
+                <p>Second Top Dressing (45-50 days after sowing):</p>
+                <p>- Urea: ${Math.round(area * 30)}kg</p>
+                <p>- NPK (if needed): ${Math.round(area * 20)}kg</p>
+            `;
+            break;
+            
+        case 'corn':
+            base = `
+                <p>- DAP: ${Math.round(area * 60)}kg</p>
+                <p>- Potash: ${Math.round(area * 40)}kg</p>
+                <p>- Zinc Sulfate: ${Math.round(area * 20)}kg</p>
+            `;
+            growth = `
+                <p>First Top Dressing (15-20 days after germination):</p>
+                <p>- Urea: ${Math.round(area * 40)}kg</p>
+                <p>Second Top Dressing (40-45 days after germination):</p>
+                <p>- Urea: ${Math.round(area * 40)}kg</p>
+                <p>Tasseling Stage:</p>
+                <p>- NPK: ${Math.round(area * 25)}kg</p>
+            `;
+            break;
+            
+        case 'vegetables':
+            base = `
+                <p>- Well-rotted Farmyard Manure: ${Math.round(area * 200)}kg</p>
+                <p>- NPK (15-15-15): ${Math.round(area * 30)}kg</p>
+                <p>- Bone Meal: ${Math.round(area * 15)}kg</p>
+            `;
+            growth = `
+                <p>Every 3-4 weeks during growth:</p>
+                <p>- NPK (15-15-15): ${Math.round(area * 15)}kg</p>
+                <p>Flowering/Fruiting Stage:</p>
+                <p>- Water-soluble Potash-rich fertilizer: ${Math.round(area * 10)}kg</p>
+                <p>- Calcium Nitrate (for fruit vegetables): ${Math.round(area * 8)}kg</p>
+            `;
+            break;
+            
+        default:
+            base = '<p>Please select a crop type to get recommendations.</p>';
+            growth = '<p>Crop-specific growth stage recommendations will appear here.</p>';
+    }
+
+    // Soil type adjustments
+    switch(soil) {
+        case 'clay':
+            notes += '<p>- Clay soil: Reduce per-application amounts and increase frequency</p>';
+            notes += '<p>- Consider adding organic matter to improve drainage</p>';
+            break;
+            
+        case 'sandy':
+            notes += '<p>- Sandy soil: Split fertilizer applications into smaller, more frequent doses</p>';
+            notes += '<p>- Consider slow-release fertilizers to prevent leaching</p>';
+            break;
+            
+        case 'loam':
+            notes += '<p>- Loam soil: Standard application rates are appropriate</p>';
+            break;
+            
+        case 'silt':
+            notes += '<p>- Silt soil: Monitor moisture levels, as silt can retain water</p>';
+            notes += '<p>- Ensure proper drainage before application</p>';
+            break;
+    }
+
+    // Irrigation method adjustments
+    switch(irrigation) {
+        case 'drip':
+            notes += '<p>- Consider using water-soluble fertilizers for better efficiency with drip irrigation</p>';
+            notes += '<p>- Reduce application amounts by 15-20% due to higher efficiency</p>';
+            break;
+            
+        case 'sprinkler':
+            notes += '<p>- Apply fertilizers before sprinkler irrigation to help incorporation</p>';
+            break;
+            
+        case 'flood':
+            notes += '<p>- Apply fertilizers after flood irrigation when soil moisture is appropriate</p>';
+            notes += '<p>- May need to increase amounts by 10-15% due to potential runoff</p>';
+            break;
+            
+        case 'rainfed':
+            notes += '<p>- Time applications based on rainfall forecasts</p>';
+            notes += '<p>- Consider slow-release formulations for more consistent nutrient availability</p>';
+            break;
+    }
+
+    // pH adjustments
+    if (pH) {
+        if (pH < 5.5) {
+            notes += '<p>- Very acidic soil: Apply agricultural lime at 200-300kg per acre to raise pH</p>';
+        } else if (pH >= 5.5 && pH < 6.5) {
+            notes += '<p>- Moderately acidic soil: Consider applying agricultural lime at 100-200kg per acre</p>';
+        } else if (pH > 7.5 && pH <= 8.5) {
+            notes += '<p>- Moderately alkaline soil: Consider applying gypsum or elemental sulfur</p>';
+        } else if (pH > 8.5) {
+            notes += '<p>- Very alkaline soil: Apply elemental sulfur at 50-100kg per acre to lower pH</p>';
+        }
+    } else {
+        notes += '<p>- Consider soil testing to determine pH for more accurate recommendations</p>';
+    }
+
+    // Previous crop adjustments
+    switch(previousCrop) {
+        case 'legumes':
+            notes += '<p>- Reduce nitrogen application by 20-30% due to residual nitrogen from previous legume crop</p>';
+            break;
+            
+        case 'rice':
+            notes += '<p>- Consider adding extra phosphorus as rice can deplete this nutrient</p>';
+            break;
+            
+        case 'wheat':
+        case 'corn':
+            notes += '<p>- Consider balanced NPK application as these crops use significant nutrients</p>';
+            break;
+            
+        case 'none':
+            notes += '<p>- First-time cultivation may require soil testing and full recommended rates</p>';
+            break;
+    }
+
+    // Add general notes if there are no specific notes yet
+    if (!notes) {
+        notes = '<p>- Follow local agricultural extension service recommendations when possible</p>';
+        notes += '<p>- Monitor crop health and adjust fertilization as needed</p>';
+    }
+
+    return {
+        base: base || 'Customized recommendation not available for this crop type.',
+        growth: growth || 'Please consult with local agricultural expert for specific growth stage recommendations.',
+        notes: notes
+    };
+}
+
+        // Track fertilizer usage
+        function trackUsage(event) {
+            event.preventDefault();
+            const date = document.getElementById('useDate').value;
+            const type = document.getElementById('fertilizerType').value;
+            const amount = document.getElementById('amountUsed').value;
+            const area = document.getElementById('fieldArea').value;
+
+            const history = document.getElementById('trackingHistory');
+            const alert = document.createElement('div');
+            alert.className = 'alert alert-success';
+            alert.innerHTML = `
+                Tracked: ${type} - ${amount}kg used on ${date} for ${area} acres
+            `;
+            history.prepend(alert);
+            
+            // Clear form
+            event.target.reset();
+
+            // Save to localStorage
+            const usage = { date, type, amount, area };
+            const usageHistory = JSON.parse(localStorage.getItem('usageHistory') || '[]');
+            usageHistory.push(usage);
+            localStorage.setItem('usageHistory', JSON.stringify(usageHistory));
+        }
+
+        // Load weather-based tips
+        function loadWeatherTips() {
+            // Simulate weather-based tips
+            const tips = [
+                "Sunny day: Ideal for fertilizer application. Apply in evening.",
+                "Rainy forecast: Delay application by 24 hours.",
+                "High humidity: Reduce application amount by 10%.",
+                "Dry conditions: Ensure proper irrigation after application."
+            ];
+            document.getElementById('weatherTip').textContent = tips[Math.floor(Math.random() * tips.length)];
+        }
+
+        // Initialize
+        updateSchedule();
+        loadWeatherTips();
+
+        // Load saved usage history
+        const savedHistory = JSON.parse(localStorage.getItem('usageHistory') || '[]');
+        const history = document.getElementById('trackingHistory');
+        savedHistory.forEach(usage => {
+            const alert = document.createElement('div');
+            alert.className = 'alert alert-success';
+            alert.innerHTML = `
+                Tracked: ${usage.type} - ${usage.amount}kg used on ${usage.date} for ${usage.area} acres
+            `;
+            history.prepend(alert);
+        });
+    </script>
+    
+    <script src="https://cdn.botpress.cloud/webchat/v2.2/inject.js"></script>
+<script src="https://files.bpcontent.cloud/2024/10/28/04/20241028040716-VNIX9VUL.js"></script>
+    
+</body>
+</html>

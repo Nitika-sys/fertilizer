@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgriWise - Sign Up</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #e6f2e6 0%, #d0e8d0 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            display: flex;
+            gap: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .image-section {
+            flex: 1;
+            background-image: url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8ZmFybXxlbnwwfHwwfHw%3D&w=1000&q=80');
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            min-height: 600px;
+        }
+
+        .image-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 40px;
+            background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+            color: white;
+        }
+
+        .image-overlay h2 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .form-section {
+            flex: 1;
+            padding: 40px;
+            background: white;
+        }
+
+        .form-section h2 {
+            color: #2d5a27;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #4CAF50;
+        }
+
+        .error {
+            color: #ff0000;
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .success-message {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            z-index: 1000;
+        }
+
+        .success-message h3 {
+            color: #4CAF50;
+            margin-bottom: 15px;
+        }
+
+        .success-message p {
+            margin-bottom: 20px;
+            color: #666;
+        }
+
+        .success-message button {
+            max-width: 200px;
+            margin: 0 auto;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .image-section {
+                min-height: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="image-section">
+            <div class="image-overlay">
+                <h2>Reimagining Agriculture for a Changing World</h2>
+                <p>Join us in revolutionizing farming practices with our premium fertilizer solutions</p>
+            </div>
+        </div>
+        <div class="form-section">
+            <h2>Welcome! Create Your Account</h2>
+            <form id="signupForm">
+                <div class="form-group">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" name="name" required>
+                    <div class="error" id="nameError">Please enter your full name</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" required>
+                    <div class="error" id="emailError">Please enter a valid email address</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" id="phone" name="phone" required>
+                    <div class="error" id="phoneError">Please enter a valid phone number</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required>
+                    <div class="error" id="passwordError">Password must be at least 6 characters</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm Password</label>
+                    <input type="password" id="confirmPassword" name="confirmPassword" required>
+                    <div class="error" id="confirmPasswordError">Passwords do not match</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="address">Complete Address</label>
+                    <textarea id="address" name="address" rows="3" required></textarea>
+                    <div class="error" id="addressError">Please enter your complete address</div>
+                </div>
+
+                <button type="submit">Sign Up</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="success-message" id="successMessage">
+        <h3>Registration Successful! 🎉</h3>
+        <p>Your account has been created successfully.</p>
+        <button onclick="redirectToLogin()">Proceed to Login</button>
+    </div>
+
+    <script>
+        const form = document.getElementById('signupForm');
+        const successMessage = document.getElementById('successMessage');
+
+        function showError(elementId, message) {
+            const error = document.getElementById(elementId);
+            error.style.display = 'block';
+            error.textContent = message;
+        }
+
+        function hideError(elementId) {
+            const error = document.getElementById(elementId);
+            error.style.display = 'none';
+        }
+
+        function validateEmail(email) {
+            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+        }
+
+        function validatePhone(phone) {
+            return /^\d{10}$/.test(phone.replace(/[\s()-]/g, ''));
+        }
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            let isValid = true;
+
+            // Name validation
+            if (form.name.value.trim() === '') {
+                showError('nameError', 'Please enter your full name');
+                isValid = false;
+            } else {
+                hideError('nameError');
+            }
+
+            // Email validation
+            if (!validateEmail(form.email.value)) {
+                showError('emailError', 'Please enter a valid email address');
+                isValid = false;
+            } else {
+                hideError('emailError');
+            }
+
+            // Phone validation
+            if (!validatePhone(form.phone.value)) {
+                showError('phoneError', 'Please enter a valid 10-digit phone number');
+                isValid = false;
+            } else {
+                hideError('phoneError');
+            }
+
+            // Password validation
+            if (form.password.value.length < 6) {
+                showError('passwordError', 'Password must be at least 6 characters');
+                isValid = false;
+            } else {
+                hideError('passwordError');
+            }
+
+            // Confirm password validation
+            if (form.password.value !== form.confirmPassword.value) {
+                showError('confirmPasswordError', 'Passwords do not match');
+                isValid = false;
+            } else {
+                hideError('confirmPasswordError');
+            }
+
+            // Address validation
+            if (form.address.value.trim() === '') {
+                showError('addressError', 'Please enter your complete address');
+                isValid = false;
+            } else {
+                hideError('addressError');
+            }
+
+            if (isValid) {
+                // Here you would typically send the data to your server
+                // For demonstration, we'll just show the success message
+                successMessage.style.display = 'block';
+                
+                // Store user data in localStorage (for demonstration)
+                const userData = {
+                    name: form.name.value,
+                    email: form.email.value,
+                    phone: form.phone.value,
+                    address: form.address.value
+                };
+                localStorage.setItem('userData', JSON.stringify(userData));
+                
+                // Clear the form
+                form.reset();
+            }
+        });
+
+        function redirectToLogin() {
+            // Replace this with your actual login page URL
+            window.location.href = 'home2.html';
+        }
+
+        // Hide errors when user starts typing
+        const inputs = form.querySelectorAll('input, textarea');
+        inputs.forEach(input => {
+            input.addEventListener('input', function() {
+                hideError(this.id + 'Error');
+            });
+        });
+    </script>
+</body>
+</html>
