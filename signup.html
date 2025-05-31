@@ -215,7 +215,7 @@
     <div class="success-message" id="successMessage">
         <h3>Registration Successful! 🎉</h3>
         <p>Your account has been created successfully.</p>
-        <button onclick="redirectToLogin()">Proceed to Login</button>
+        <button onclick="redirectToHome()">Go to Home</button>
     </div>
 
     <script>
@@ -238,7 +238,7 @@
         }
 
         function validatePhone(phone) {
-            return /^\d{10}$/.test(phone.replace(/[\s()-]/g, ''));
+            return /^[0-9]{10}$/.test(phone.replace(/[^\s()-]/g, ''));
         }
 
         form.addEventListener('submit', function(e) {
@@ -295,7 +295,7 @@
 
             if (isValid) {
                 // Here you would typically send the data to your server
-                // For demonstration, we'll just show the success message
+                // For demonstration, we'll just show the success message and redirect
                 successMessage.style.display = 'block';
                 
                 // Store user data in localStorage (for demonstration)
@@ -309,12 +309,14 @@
                 
                 // Clear the form
                 form.reset();
+
+                // Redirect to home page after a short delay
+                setTimeout(redirectToHome, 2000); // Redirect after 2 seconds
             }
         });
 
-        function redirectToLogin() {
-            // Replace this with your actual login page URL
-            window.location.href = 'home2.html';
+        function redirectToHome() {
+            window.location.href = 'home.html';
         }
 
         // Hide errors when user starts typing
@@ -324,6 +326,13 @@
                 hideError(this.id + 'Error');
             });
         });
+
+        // Prevent success message from staying on refresh
+        window.addEventListener('load', () => {
+            if (successMessage.style.display === 'block') {
+                successMessage.style.display = 'none';
+            }
+        });
     </script>
 </body>
-</html>
+</html> 
