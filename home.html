@@ -201,6 +201,86 @@
             line-height: 1.5;
         }
 
+        /* Floating Chat Button Styles */
+        .chat-button {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background-color: #4CAF50;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, background-color 0.3s ease;
+            z-index: 999;
+        }
+
+        .chat-button:hover {
+            transform: scale(1.1);
+            background-color: #45a049;
+        }
+
+        .chat-button i {
+            color: white;
+            font-size: 24px;
+        }
+
+        /* Chatbot Modal Styles */
+        .chatbot-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+
+        .chatbot-container {
+            position: relative;
+            width: 90%;
+            max-width: 800px;
+            height: 80%;
+            margin: 5% auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .chatbot-iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            border-radius: 10px;
+        }
+
+        .close-chatbot {
+            position: absolute;
+            top: -15px;
+            right: -15px;
+            width: 30px;
+            height: 30px;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .close-chatbot:hover {
+            background: #45a049;
+        }
+
         @media (max-width: 768px) {
             .slider-container {
                 height: 300px;
@@ -273,6 +353,23 @@
         </a>
     </section>
 
+    <!-- Floating Chat Button -->
+    <div class="chat-button" id="chatbotBtn">
+        <i class="fas fa-comments"></i>
+    </div>
+
+    <!-- Chatbot Modal -->
+    <div id="chatbotModal" class="chatbot-modal">
+        <div class="chatbot-container">
+            <button class="close-chatbot" id="closeChatbot">&times;</button>
+            <iframe 
+                src="https://cdn.botpress.cloud/webchat/v2.2/shareable.html?configUrl=https://files.bpcontent.cloud/2024/10/28/22/20241028223634-2JS55NIF.json" 
+                class="chatbot-iframe"
+                title="Botpress Chatbot">
+            </iframe>
+        </div>
+    </div>
+
     <script>
         const slides = document.querySelectorAll('.slide');
         const prevBtn = document.querySelector('.prev-btn');
@@ -300,17 +397,27 @@
 
         // Auto-advance slides every 5 seconds
         setInterval(nextSlide, 5000);
+
+        // Chatbot Modal Functionality
+        const chatbotBtn = document.getElementById('chatbotBtn');
+        const chatbotModal = document.getElementById('chatbotModal');
+        const closeChatbot = document.getElementById('closeChatbot');
+
+        chatbotBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            chatbotModal.style.display = 'block';
+        });
+
+        closeChatbot.addEventListener('click', function() {
+            chatbotModal.style.display = 'none';
+        });
+
+        window.addEventListener('click', function(e) {
+            if (e.target === chatbotModal) {
+                chatbotModal.style.display = 'none';
+            }
+        });
     </script>
-
-    <script src="https://cdn.botpress.cloud/webchat/v2.2/inject.js"></script>
-    <script src="https://files.bpcontent.cloud/2024/10/28/04/20241028040716-VNIX9VUL.js"></script>
-
-    <!-- Embed the Botpress chatbot using an iframe -->
-    <iframe 
-        src="https://cdn.botpress.cloud/webchat/v2.2/shareable.html?configUrl=https://files.bpcontent.cloud/2024/10/28/22/20241028223634-2JS55NIF.json" 
-        class="chatbot-iframe"
-        title="Botpress Chatbot">
-    </iframe>
 
 </body>
 </html> 
